@@ -4,6 +4,14 @@ The ML model in this repo is trying to study the Kaggle competition "Science Top
 
 # Data Wrangling and Feature Engineering
 
+
+|#  |Column|   Non-Null Count |Dtype| 
+|---|------|------------------|-----|
+| 0 |TITLE |    15472 non-null|object|
+| 1 |ABSTRACT|  15472 non-null|object|
+| 2 |label|     15472 non-null|int64|
+
+
 # Machine Learning Model
 
 # Result and Discussion
