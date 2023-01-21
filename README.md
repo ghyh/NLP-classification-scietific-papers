@@ -15,9 +15,16 @@ Before feeding the train data set into the model, 20% of the rows, i.e. 3094 row
 To improve the model, numeric characters, single-digit characters, i.e. a to z, and common stop words, imported from nltk library, are also removed from the text corpus of concatenated column of TITLE and ABSTRACT. 
 
 # Machine Learning Model
-The ML model used in 
+The ML model used in this study composes of (1) Embedding layer,(2) Bidirectional LSTM layer, and (3) 3 Dense layers, where 20% of coefficients connecting to each Dense layer are set to 0 randomly to avoid overfitting, as shown below.
+![Screenshot 2023-01-19 at 20-34-02 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213840275-f5038209-caa8-4913-960d-810154f0349e.png)
+
 
 # Result and Discussion
+
+|   |Accuracy|Loss|
+|---|--------|----|
+|Original|0.8022|0.6396|
+|No Stop Words|0.8116|0.5967|
 
 ## Reference
 1. Science Topic Classification, Kaggle (https://www.kaggle.com/competitions/science-topic-classification/)   
