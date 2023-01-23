@@ -37,6 +37,9 @@ class G:
     result_dim=4
     batch_size=32
     dropout_ratio=0.2
+    patience=2
+    np_random_seed=42
+    learning_rate = 5e-5
 
 # define the function to read file as csv
 def read_input_file(path,filename,delimiter=','):
@@ -64,6 +67,8 @@ test_df = pd.DataFrame({'col1': ['A','b','c'],'col2': [1,2,3]})
 assert concat_all_string_cells(test_df,test_df.columns) == 'a 1 b 2 c 3'
 
 # Randomly select 20% of the train data to be validation data
+np.random.seed(G.np_random_seed)
+
 def random_validation_row(df,validation_percentage):
     return np.random.choice(df.index.to_list(),int(len(df.index.to_list())*validation_percentage),False)
 
@@ -158,14 +163,14 @@ model.summary()
 # ref: https://angularfixing.com/tensorflow-keras-shape-mismatch/
 model.compile(
     loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True),
-    optimizer=tf.optimizers.RMSprop(),
+    optimizer=tf.optimizers.RMSprop(learning_rate=G.learning_rate),
     metrics=['accuracy']
 )
 
 # callback function for fit
 callback_early_stop = tf.keras.callbacks.EarlyStopping(
     monitor='val_loss',
-    patience=3
+    patience=G.patience
 )
 
 history = model.fit(
@@ -244,7 +249,7 @@ model_no_stop_words.summary()
 
 model_no_stop_words.compile(
     loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True),
-    optimizer=tf.optimizers.RMSprop(),
+    optimizer=tf.optimizers.RMSprop(learning_rate=G.learning_rate),
     metrics=['accuracy']
 )
 
