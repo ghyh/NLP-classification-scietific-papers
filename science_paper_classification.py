@@ -307,7 +307,7 @@ history_no_stop_words = model_no_stop_words.fit(
 
 # ref: https://www.tensorflow.org/tutorials/keras/text_classification
 # params of the training process
-history_params_no_stop_words = history.history
+history_params_no_stop_words = history_no_stop_words.history
 train_accuracy_no_stop_words = history_params_no_stop_words['accuracy']
 train_loss_no_stop_words = history_params_no_stop_words['loss']
 validation_accuracy_no_stop_words = history_params_no_stop_words['val_accuracy']
