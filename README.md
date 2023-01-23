@@ -18,32 +18,35 @@ Before feeding the train data set into the model, 20% of the rows, i.e. 3094 row
 To improve the model, numeric characters, single-digit characters, i.e. a to z, and common stop words, imported from nltk library, are also removed from the text corpus of concatenated column of TITLE and ABSTRACT. 
 
 # Machine Learning Model
-The ML model used in this study is a neural network composed of (1) Embedding layer[3],(2) Bidirectional LSTM layer[4], and (3) 3 Dense layers, where 20% of coefficients connecting to each Dense layer are set to 0 randomly to avoid overfitting, as shown below.
+The ML model used in this study is a neural network composed of (1) Embedding layer[3],(2) Bidirectional LSTM layer[4], and (3) 3 Dense layers, where 20% of coefficients connecting to each Dense layer are set to 0 randomly to reduce overfitting, as shown below.   
 ![Screenshot 2023-01-19 at 20-34-02 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213840275-f5038209-caa8-4913-960d-810154f0349e.png)   
 The embedding layer encodes each word in the training corpus as a vector of floating point number, and the vectors of words with similar meaning are similar [3]. The LSTM layer provides the capability of long-term memory[4] for words in abstract and title. Adding bidirectional layer on top of LSTM further enables the model to associate a keyword with words before and after it. In Dense layers, ReLU (Rectified Linear Unit)[5] is used as activation function except for the output layer, where Softmax[6] is used as activation function instead because this is a multi-class classification problem.
 The hyperparameters used in the model, such as the dimension for embedding layer (global variable embedding_dim), the diimension of output space in LSTM layer (lstm_dim), size of traning batch (batch_size), and learning rate of training (learning_rate), are fine-tuned based on the loss of validation data (process not shown in the result). 
 
 # Result and Discussion
-The result of training can be found in the table below. It's clear to see that removing stop words and characters not meaningful does help improve the model.   
+The result of training can be found in the table below. It's clear to see that removing stop words and characters not meaningful does help improve the model, especially in loss.   
 
 |   |Original|No Stop Words|Improvement|
 |---|--------|----|---|
-|Validation Accuracy|0.8032|0.8116|1.05%|
-|Validation Loss|0.6396|0.5967|-6.7%|
+|Validation Accuracy*|0.8081|0.8111|0.4%|
+|Validation Loss*|0.6108|0.5850|-4.2%|
 
-During the training, it's noticeable that as more epochs is processed in the training, the loss against the validation set begins to increase and the accuracy begins to plateau while the loss and accuracy of the training dataset keeps improving, as shown in the two sets of figures below.   
+\*: Arithmetic average of values
+
+During the training, there is a noticeable sign where as more epochs is processed in the training, the loss against the validation set begins to increase and the accuracy begins to plateau while the loss and accuracy of the training dataset keeps improving, as shown in the two sets of figures below.   
 - Accuracy and Loss in the Original model
 
 |Accuracy|Loss|
 |---|---|
-|![Screenshot 2023-01-19 at 20-33-34 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213957856-e221412f-13c7-4d2c-bb28-28c4a5b1dceb.png)|![Screenshot 2023-01-19 at 20-33-05 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213957866-e3177d4b-28a3-4d38-a82e-dd0d7ccb4ca2.png)|
-
+|![Screenshot 2023-01-22 at 19-33-53 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213975092-0c4e8a7e-19ea-4f82-ad94-00504779bb98.png)|![Screenshot 2023-01-22 at 19-33-41 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213975111-9b05dcc1-2820-4d8e-b6a5-55449db48fc9.png)|
 
 - Accuracy and Loss in the Model without Stop Words
 
 |Accuracy|Loss|
 |---|---|
+|![Screenshot 2023-01-22 at 20-34-39 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213974992-017bc6ff-0e2d-4ab5-88d4-a77de80a7b87.png)|![Screenshot 2023-01-22 at 20-34-28 SciencePaperCategorization Kaggle](https://user-images.githubusercontent.com/30448897/213975010-c940bda7-2ccf-4147-b9d0-85c1f1a9bc40.png)|
 
+Overfitting prevents the model from providing accurate prediction when it is applied to a new data set, such as the test set in the problem. The possible cause could be that (1) the dataset for training is too large and limits the training path, and/or (2) the coefficients in the model are too rigid to change from previous round of optimization or initial state. One possible approach to reduce overfitting is to increase the dropout out ratio in Dropout layer[7]. This proposal could add randomness to the model and could potentially reduce overfitting, but it is pending further test.
 
 ## Reference
 1. Science Topic Classification, Kaggle (https://www.kaggle.com/competitions/science-topic-classification/)   
