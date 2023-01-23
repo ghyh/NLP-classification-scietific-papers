@@ -180,6 +180,10 @@ history = model.fit(
     epochs=G.epochs
 )
 
+# evaluate the model
+history_params = history.history
+history_params.keys()
+
 # plot and compare the result of training process
 train_accuracy = history_params['accuracy']
 train_loss = history_params['loss']
@@ -259,6 +263,33 @@ history_no_stop_words = model_no_stop_words.fit(
     callbacks=[callback_early_stop],
     epochs=G.epochs
 )
+
+# ref: https://www.tensorflow.org/tutorials/keras/text_classification
+# params of the training process
+history_params_no_stop_words = history_no_stop_words.history
+train_accuracy_no_stop_words = history_params_no_stop_words['accuracy']
+train_loss_no_stop_words = history_params_no_stop_words['loss']
+validation_accuracy_no_stop_words = history_params_no_stop_words['val_accuracy']
+validation_loss_no_stop_words = history_params_no_stop_words['val_loss']
+
+# plot loss of training & validation
+epochs_no_stop_words = range(1,len(train_accuracy_no_stop_words)+1)
+plt.plot(epochs_no_stop_words,train_loss_no_stop_words,'bo',label='Train Loss')
+plt.plot(epochs_no_stop_words,validation_loss_no_stop_words,'b',label='Validation Loss')
+plt.title('Train and Validation Loss without Stop Words')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+# plot accuracy of training and validation
+plt.plot(epochs_no_stop_words,train_accuracy_no_stop_words,'bo',label='Train Accuracy')
+plt.plot(epochs_no_stop_words,validation_accuracy_no_stop_words,'b',label='Validation Accuracy')
+plt.title('Train and Validation Accuracy without Stop Words')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
 
 # evaluate test data
 clean_test_text = tf.strings.regex_replace(tf.strings.lower(test_file[G.data_cols]),'[^a-zA-Z0-9 ]',' ')
